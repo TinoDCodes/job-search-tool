@@ -29,7 +29,7 @@ export default function RootLayout({
             className="h-20 w-80"
           />
         </header>
-        <main className="h-full w-full ">{children}</main>
+        <main className="h-full w-full overflow-y-hidden">{children}</main>
       </body>
     </html>
   );
