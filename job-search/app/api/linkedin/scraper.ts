@@ -10,7 +10,33 @@ export type LinkedInJob = {
   link?: string;
 };
 
-export async function getScrapedLinkedInJobs(pageUrl: string) {
+// 'keywords=Python%20(Programming%20Language)&location=Las%20Vegas,%20Nevada,%20United%20States'
+const SEARCH_PAGE_BASE_URL =
+  "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?";
+
+/**
+ * Builds a url for the LinkedIn search page api using the {@link SEARCH_PAGE_BASE_URL} and
+ * user input values from the frontend.
+ *
+ * @param {string} searchKeywords - search keywords entered by the user for the desired job posts.
+ * @returns {string} the LinkedIn search page url with the relevant query strings appended to it.
+ */
+function searchPageUrlBuilder(searchKeywords: string) {
+  const keywords = encodeURIComponent(searchKeywords);
+
+  const pageUrl = `${SEARCH_PAGE_BASE_URL}keywords=${keywords}`;
+  return pageUrl;
+}
+
+/**
+ * Scrapes job listings from LinkedIn based on the provided user search input values.
+ *
+ * @param {string} searchKeywords - The search keywords entered by the user for the desired job posts.
+ * @returns {Promise<LinkedInJob[]>} A promise that resolves to an array of job objects, each containing the
+ * id, title, company, location, date listed, and link of a job listing.
+ */
+export async function getScrapedLinkedInJobs(searchKeywords: string) {
+  const scrapedJobsList: LinkedInJob[] = [];
   // Launch the browser and open a new blank page
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -18,23 +44,44 @@ export async function getScrapedLinkedInJobs(pageUrl: string) {
   // Set screen size
   await page.setViewport({ width: 1920, height: 1080 });
 
-  // Navigate the page to desired url
-  await page.goto(pageUrl, {
-    waitUntil: "domcontentloaded",
-  });
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const searchUrl = searchPageUrlBuilder(searchKeywords);
 
-  // collect the page's html data
-  const html = await page.content();
+  for (let i = 0; i < 6; i++) {
+    try {
+      let fullSearchPageUrl = `${searchUrl}&start=${i * 25}`;
 
-  const linkedInJobs = scrapeLinkedInJobCards(html);
+      // Navigate the page to desired url
+      await page.goto(fullSearchPageUrl, {
+        waitUntil: "domcontentloaded",
+      });
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-  console.log(linkedInJobs);
+      // collect the page's html data
+      const html = await page.content();
 
-  return linkedInJobs;
+      const jobs = scrapeJobsFromSearchPage(html);
+
+      scrapedJobsList.push(...jobs);
+    } catch (error) {
+      console.error(
+        `Unexpected error while scraping LinkedIn Jobs on page ${i + 1}`,
+        error
+      );
+    }
+  }
+
+  // console.log(scrapedJobsList, `\nNumber of jobs: ${scrapedJobsList.length}`);
+  return scrapedJobsList;
 }
 
-function scrapeLinkedInJobCards(html: string) {
+/**
+ * Scrapes job listings from the html of a LinkedIn search page.
+ *
+ * @param {string} html - The HTML content of the LinkedIn search page.
+ * @returns {LinkedInJob[]} An array of job objects, each containing the id, title, company,
+ * location, date listed, and link of a job listing.
+ */
+function scrapeJobsFromSearchPage(html: string) {
   const $ = cheerio.load(html);
 
   const jobs = $("li");
@@ -52,10 +99,9 @@ function scrapeLinkedInJobCards(html: string) {
       .find(".job-search-card__location")
       .text()
       .trim();
-    const dateListed = $(jobElement)
-      .find(".job-search-card__listdate")
-      .text()
-      .trim();
+    const dateListed =
+      $(jobElement).find(".job-search-card__listdate").text().trim() ||
+      $(jobElement).find(".job-search-card__listdate--new").text().trim();
 
     list.push({
       id: getJobIdNumber(id),
