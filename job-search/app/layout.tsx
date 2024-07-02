@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
+import { Providers } from "./providers";
 import "./globals.css";
-import Image from "next/image";
 
 const openSans = Open_Sans({ subsets: ["latin"] });
 
@@ -17,19 +17,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={openSans.className + " max-w-screen-2xl mx-auto"}>
-        <header className="h-full w-full flex items-center justify-center">
-          <Image
-            src="/logo.png"
-            alt="logo"
-            height="0"
-            width="0"
-            sizes="100vw"
-            className="h-20 w-80"
-          />
-        </header>
-        <main className="h-full w-full overflow-y-hidden">{children}</main>
+    <html lang="en" className="custom-light">
+      <body className={openSans.className}>
+        <Providers>
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   );
