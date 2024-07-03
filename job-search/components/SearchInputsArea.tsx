@@ -12,7 +12,7 @@ const SearchInputsArea = ({ submitSearch }: Props) => {
   const [searchInput, setSearchInput] = useState("");
 
   const handleSearchClick = () => {
-    console.log(searchInput);
+    submitSearch(searchInput);
     setSearchInput("");
   };
 

@@ -6,6 +6,7 @@ import Hero from "@/components/Hero";
 import Image from "next/image";
 import SearchHistory from "@/components/SearchHistory";
 import SearchInputsArea from "@/components/SearchInputsArea";
+import DisplayJobListings from "@/components/DisplayJobListings";
 
 const Home = () => {
   const [loadingJobs, setLoadingJobs] = useState<boolean>(false);
@@ -31,7 +32,7 @@ const Home = () => {
   };
 
   return (
-    <main className="h-full w-full px-10">
+    <main className="h-full w-full flex flex-col px-10 pb-16">
       <header className="w-full h-fit flex items-center justify-between py-6 px-10">
         <Image
           src="/logo.png"
@@ -45,13 +46,21 @@ const Home = () => {
         <SearchHistory />
       </header>
 
-      <div className="relative flex">
+      <section className="relative flex mb-16 z-50">
         <Hero />
 
-        <section className="w-4/5 h-16 absolute -bottom-8 left-1/2 transform -translate-x-1/2 rounded-xl bg-[#eee] shadow-xl px-4 py-2">
+        <div className="w-4/5 h-16 absolute -bottom-8 left-1/2 transform -translate-x-1/2 rounded-xl bg-[#eee] shadow-xl px-4 py-2">
           <SearchInputsArea submitSearch={handleSearch} />
-        </section>
-      </div>
+        </div>
+      </section>
+
+      <section className="h-[1fr] w-full">
+        {loadingJobs ? (
+          <div>loading</div>
+        ) : (
+          <DisplayJobListings jobListings={linkedInData} />
+        )}
+      </section>
     </main>
   );
 };
