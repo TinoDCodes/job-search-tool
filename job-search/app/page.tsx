@@ -56,7 +56,12 @@ const Home = () => {
 
       <section className="h-[1fr] w-full">
         {loadingJobs ? (
-          <div>loading</div>
+          <div className="h-full w-full flex flex-col items-center justify-center pt-40 ease-in">
+            <div className="loader mb-4"></div>
+            <h3 className="text-lg font-bold text-[var(--color-text-7)] opacity-50">
+              Finding Job Listings...
+            </h3>
+          </div>
         ) : (
           <DisplayJobListings jobListings={linkedInData} />
         )}

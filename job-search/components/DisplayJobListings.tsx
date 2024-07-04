@@ -49,6 +49,7 @@ const DisplayJobListings = ({ jobListings }: Props) => {
               size="sm"
               target="_blank"
               href={job.link}
+              className="font-medium"
             >
               View listing
             </Link>

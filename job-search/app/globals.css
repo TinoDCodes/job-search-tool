@@ -12,7 +12,7 @@
   --color-text-4: #00c5be;
   --color-text-5: #0090d1;
   --color-text-6: #48817d;
-  --color-text-7: #504350;
+  --color-text-7: #5a2b5aaf;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -171,5 +171,36 @@ body {
     transform: translateY(-1000px) rotate(720deg);
     opacity: 0;
     border-radius: 50%;
+  }
+}
+
+/*---------- LOADER STYLES */
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 110px;
+  aspect-ratio: 1;
+  background: radial-gradient(farthest-side, #9e61a1 40%, #0000) center/48px
+      48px,
+    radial-gradient(farthest-side, #00c9c2 30%, #0000) bottom/24px 24px;
+  background-repeat: no-repeat;
+  animation: l17 1s infinite linear;
+  position: relative;
+}
+.loader::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  aspect-ratio: 1;
+  inset: auto 0 16px;
+  margin: auto;
+  background: #ffc05aa6;
+  border-radius: 50%;
+  transform-origin: 50% calc(100% + 16px);
+  animation: inherit;
+  animation-duration: 0.8s;
+}
+@keyframes l17 {
+  100% {
+    transform: rotate(1turn);
   }
 }
