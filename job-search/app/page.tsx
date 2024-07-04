@@ -15,15 +15,14 @@ const Home = () => {
   const handleSearch = async (keywords: string) => {
     setLoadingJobs(true);
     try {
-      const response = await fetch("/api/linkedin", {
+      await fetch("/api/linkedin", {
         headers: {
           "search-keywords": keywords,
         },
+      }).then(async (response) => {
+        const { linkedInJobs } = await response.json();
+        setLinkedInData(linkedInJobs);
       });
-      const { linkedInJobs } = await response.json();
-      setLinkedInData(linkedInJobs);
-
-      console.log(linkedInJobs);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -56,7 +55,7 @@ const Home = () => {
 
       <section className="h-[1fr] w-full">
         {loadingJobs ? (
-          <div className="h-full w-full flex flex-col items-center justify-center pt-40 ease-in">
+          <div className="h-full w-full flex flex-col items-center justify-center pt-28 ease-in">
             <div className="loader mb-4"></div>
             <h3 className="text-lg font-bold text-[var(--color-text-7)] opacity-50">
               Finding Job Listings...

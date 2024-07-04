@@ -46,7 +46,7 @@ export async function getScrapedLinkedInJobs(searchKeywords: string) {
 
   const searchUrl = searchPageUrlBuilder(searchKeywords);
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 10; i++) {
     try {
       let fullSearchPageUrl = `${searchUrl}&start=${i * 25}`;
 
