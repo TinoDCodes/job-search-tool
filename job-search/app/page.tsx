@@ -12,12 +12,13 @@ const Home = () => {
   const [loadingJobs, setLoadingJobs] = useState<boolean>(false);
   const [linkedInData, setLinkedInData] = useState<LinkedInJob[] | null>(null);
 
-  const handleSearch = async (keywords: string) => {
+  const handleSearch = async (keywords: string, location: string) => {
     setLoadingJobs(true);
     try {
       await fetch("/api/linkedin", {
         headers: {
           "search-keywords": keywords,
+          location: location,
         },
       }).then(async (response) => {
         const { linkedInJobs } = await response.json();

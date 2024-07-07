@@ -8,9 +8,10 @@ export type LinkedInJob = {
   location: string;
   dateListed: string;
   link?: string;
+  imageSrc?: string;
 };
 
-// 'keywords=Python%20(Programming%20Language)&location=Las%20Vegas,%20Nevada,%20United%20States'
+// https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Python%20(Programming%20Language)&location=Las%20Vegas,%20Nevada,%20United%20States
 const SEARCH_PAGE_BASE_URL =
   "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?";
 
@@ -21,10 +22,13 @@ const SEARCH_PAGE_BASE_URL =
  * @param {string} searchKeywords - search keywords entered by the user for the desired job posts.
  * @returns {string} the LinkedIn search page url with the relevant query strings appended to it.
  */
-function searchPageUrlBuilder(searchKeywords: string) {
+function searchPageUrlBuilder(searchKeywords: string, location: string) {
   const keywords = encodeURIComponent(searchKeywords);
+  const locationUriComponent = location.trim()
+    ? `&location=${encodeURIComponent(location)}`
+    : "";
 
-  const pageUrl = `${SEARCH_PAGE_BASE_URL}keywords=${keywords}`;
+  const pageUrl = `${SEARCH_PAGE_BASE_URL}keywords=${keywords}${locationUriComponent}`;
   return pageUrl;
 }
 
@@ -32,10 +36,14 @@ function searchPageUrlBuilder(searchKeywords: string) {
  * Scrapes job listings from LinkedIn based on the provided user search input values.
  *
  * @param {string} searchKeywords - The search keywords entered by the user for the desired job posts.
+ * @param {string} [location] - the location the user wishes to find the particular jobs in.
  * @returns {Promise<LinkedInJob[]>} A promise that resolves to an array of job objects, each containing the
  * id, title, company, location, date listed, and link of a job listing.
  */
-export async function getScrapedLinkedInJobs(searchKeywords: string) {
+export async function getScrapedLinkedInJobs(
+  searchKeywords: string,
+  location: string
+) {
   const scrapedJobsList: LinkedInJob[] = [];
   // Launch the browser and open a new blank page
   const browser = await puppeteer.launch();
@@ -44,7 +52,7 @@ export async function getScrapedLinkedInJobs(searchKeywords: string) {
   // Set screen size
   await page.setViewport({ width: 1920, height: 1080 });
 
-  const searchUrl = searchPageUrlBuilder(searchKeywords);
+  const searchUrl = searchPageUrlBuilder(searchKeywords, location);
 
   for (let i = 0; i < 10; i++) {
     try {
@@ -70,7 +78,6 @@ export async function getScrapedLinkedInJobs(searchKeywords: string) {
     }
   }
 
-  // console.log(scrapedJobsList, `\nNumber of jobs: ${scrapedJobsList.length}`);
   return scrapedJobsList;
 }
 
@@ -102,6 +109,7 @@ function scrapeJobsFromSearchPage(html: string) {
     const dateListed =
       $(jobElement).find(".job-search-card__listdate").text().trim() ||
       $(jobElement).find(".job-search-card__listdate--new").text().trim();
+    const imageSrc = $(jobElement).find("img").attr("data-delayed-url");
 
     list.push({
       id: getJobIdNumber(id),
@@ -110,6 +118,7 @@ function scrapeJobsFromSearchPage(html: string) {
       location,
       dateListed,
       link,
+      imageSrc,
     });
   });
 

@@ -38,33 +38,51 @@ const DisplayJobListings = ({ jobListings }: Props) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (!jobListings) {
+  if (!jobListings || jobListings.length === 0) {
     return <EmptyJobsScreen />;
   }
 
   return (
     <main className="h-full w-full flex flex-col gap-6">
+      <h5 className="text-center font-bold text-sm opacity-40">
+        {jobListings.length} listings found.
+      </h5>
       <section className="w-full grid grid-cols-3 gap-8">
         {displayedJobs?.map((job, index) => (
           <Card key={job.id || index} className="w-full px-6 py-2 bg-[#eeee]">
-            <CardBody className="flex flex-col">
-              <h4 className="text-lg font-semibold text-[var(--color-text-1)]">
-                {job.title}
-              </h4>
-              <h5 className="font-medium text-[var(--color-text-7)]">
-                {job.company}
-              </h5>
-              <div className="flex gap-2 items-center">
-                <p>{job.location}</p>
+            <CardBody className="flex flex-row items-center">
+              {/*--------------- JOB LISTING DETAILS ---------------*/}
+              <div className=" flex flex-col">
+                <h4 className="text-lg font-semibold text-[var(--color-text-1)]">
+                  {job.title}
+                </h4>
+                <h5 className="font-medium text-[var(--color-text-7)]">
+                  {job.company}
+                </h5>
+                <div className="flex gap-2 items-center">
+                  <p>{job.location}</p>
+                  <Image
+                    src="/location-pin.svg"
+                    alt="location"
+                    height="0"
+                    width="0"
+                    sizes="100vw"
+                    className="h-3 w-3"
+                  />
+                </div>
+              </div>
+
+              {/*--------------- JOB COMPANY IMAGE ---------------*/}
+              {job.imageSrc && (
                 <Image
-                  src="/location-pin.svg"
+                  src={job.imageSrc}
                   alt="location"
                   height="0"
                   width="0"
                   sizes="100vw"
-                  className="h-3 w-3"
+                  className="h-[5rem] w-[5rem] ml-auto"
                 />
-              </div>
+              )}
             </CardBody>
             <Divider />
             <CardFooter className="flex justify-between">
@@ -87,6 +105,8 @@ const DisplayJobListings = ({ jobListings }: Props) => {
           </Card>
         ))}
       </section>
+
+      {/*--------------- PAGINATION ---------------*/}
       <Pagination
         showShadow
         color="secondary"

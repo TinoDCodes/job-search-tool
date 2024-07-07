@@ -3,7 +3,9 @@ import { getScrapedLinkedInJobs } from "./scraper";
 
 export async function GET(request: Request) {
   const searchKeywords = request.headers.get("search-keywords");
-  const jobsFound = await getScrapedLinkedInJobs(searchKeywords!);
+  const location = request.headers.get("location");
+
+  const jobsFound = await getScrapedLinkedInJobs(searchKeywords!, location!);
 
   return NextResponse.json({
     linkedInJobs: jobsFound,
