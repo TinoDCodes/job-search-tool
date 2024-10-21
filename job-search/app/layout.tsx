@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
-import { Providers } from "./providers";
+import { Montserrat } from "next/font/google";
+import { UIProvider } from "./providers";
 import "./globals.css";
+import { Header } from "@/components/Header";
 
-const openSans = Open_Sans({ subsets: ["latin"] });
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+});
 
 export const metadata: Metadata = {
-  title: "Job Discover",
+  title: "Job Seekr",
   description:
     "A job search tool for discovering jobs in your field of interest.",
 };
@@ -17,11 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="custom-light">
-      <body className={openSans.className}>
-        <Providers>
-          <main>{children}</main>
-        </Providers>
+    <html lang="en">
+      <body className={montserrat.className}>
+        <UIProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            {children}
+          </div>
+        </UIProvider>
       </body>
     </html>
   );

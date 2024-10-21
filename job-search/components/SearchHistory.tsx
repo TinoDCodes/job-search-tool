@@ -30,7 +30,7 @@ const SearchHistory = () => {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button variant="shadow" color="secondary">
+        <Button variant="shadow" color="secondary" size="sm">
           Previous searches
         </Button>
       </DropdownTrigger>

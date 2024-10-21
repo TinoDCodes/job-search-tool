@@ -1,10 +1,15 @@
 const Hero = () => {
   return (
-    <div className="hero relative h-[12rem] w-full rounded-xl flex flex-col gap-4 items-center justify-center">
-      <h3 className="text-3xl font-bold">Discover Jobs That Fit You</h3>
-      <p className="text-center">
-        Streamlining your job search by compiling listings from top sites such
-        as LinkedIn, Indeed, Upwork, Toptal, OfferZen, and more.
+    <div className="flex flex-col items-center justify-center gap-5 lg:gap-7 mt-36 lg:mt-48">
+      <h1 className="font-bold text-center text-2xl md:text-3xl lg:text-4xl xl:text-6xl">
+        The Smart Way to{" "}
+        <span className="text-teal-400 dark:text-shadow-same">
+          Search for Jobs
+        </span>
+      </h1>
+      <p className="text-center font-medium text-zinc-500 max-w-[35rem] text-sm xl:text-lg xl:max-w-[55rem] dark:text-zinc-100">
+        Streamline your job search by compiling listings from top sites such as
+        LinkedIn, Indeed, Upwork, Toptal, OfferZen, and more.
       </p>
     </div>
   );
