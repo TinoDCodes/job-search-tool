@@ -3,10 +3,10 @@ import SearchInputsArea from "@/components/SearchInputsArea";
 
 const Home = () => {
   return (
-    <main className="wrapper h-full flex flex-col items-center justify-center">
+    <main className="wrapper h-full flex flex-col items-center justify-center app-background">
       <Hero />
 
-      {/* <SearchInputsArea /> */}
+      <SearchInputsArea />
     </main>
   );
 };

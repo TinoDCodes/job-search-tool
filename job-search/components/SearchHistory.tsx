@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Dropdown,
   DropdownTrigger,
@@ -6,6 +7,7 @@ import {
   DropdownItem,
   Button,
 } from "@nextui-org/react";
+import { CustomButton } from "./custom/CustomButton";
 
 const SearchHistory = () => {
   const items = [
@@ -30,9 +32,9 @@ const SearchHistory = () => {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button variant="shadow" color="secondary" size="sm">
+        <CustomButton color="teal-shadow" className="rounded-full">
           Previous searches
-        </Button>
+        </CustomButton>
       </DropdownTrigger>
       <DropdownMenu aria-label="Dynamic Actions" items={items}>
         {(item) => (

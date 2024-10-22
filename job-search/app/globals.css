@@ -32,6 +32,22 @@ body {
 }
 
 @layer utilities {
+  .globe-background {
+    position: absolute;
+    width: calc(100vh * 0.9); /* Adjust size as needed */
+    height: calc(100vh * 0.9);
+    background: radial-gradient(
+      circle,
+      rgba(45, 212, 191, 1) 0%,
+      rgba(45, 212, 191, 0) 70%
+    );
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+
   .text-balance {
     text-wrap: balance;
   }

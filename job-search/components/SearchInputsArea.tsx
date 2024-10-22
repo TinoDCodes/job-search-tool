@@ -1,9 +1,11 @@
 "use client";
 
 import { LinkedInJob } from "@/app/api/linkedin/scraper";
-import { Input, Button } from "@nextui-org/react";
-import Image from "next/image";
+import { Input, Button, Divider } from "@nextui-org/react";
 import { useState } from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { MapPinIcon } from "@heroicons/react/16/solid";
+import { CustomButton } from "./custom/CustomButton";
 
 const SearchInputsArea = () => {
   const [searchInput, setSearchInput] = useState<string>("");
@@ -39,95 +41,84 @@ const SearchInputsArea = () => {
   };
 
   return (
-    <div className="w-full h-full flex gap-3 items-center">
+    <form className="w-full md:max-w-[80%] lg:max-w-[70%] xl:max-w-[60%] flex items-center gap-3 rounded-full shadow-md bg-[#eeeeee] dark:bg-white/10 p-3">
       {/*--------------- KEYWORDS INPUT ---------------*/}
       <Input
         value={searchInput}
         isClearable
-        radius="sm"
         placeholder="Search for job listings..."
         onValueChange={(value) => setSearchInput(value)}
-        className="w-2/3"
+        className="w-6/12"
         classNames={{
           input: [
-            "bg-transparent",
+            "bg-transparent dark:bg-transparent",
             "text-black/90 dark:text-white/90",
-            "placeholder:text-default-900/50 dark:placeholder:text-white/60",
+            "placeholder:font-medium placeholder:text-default-900/50 dark:placeholder:text-white/60",
+            "hover:bg-transparent",
           ],
-          innerWrapper: "bg-transparent",
+          innerWrapper: "bg-transparent dark:bg-transparent",
           inputWrapper: [
-            "bg-default-200/50",
-            "dark:bg-default/60",
-            "backdrop-blur-lg",
-            "backdrop-saturate-200",
-            "hover:bg-default-200/70",
-            "dark:hover:bg-default/70",
-            "group-data-[focus=true]:bg-default-200/50",
-            "dark:group-data-[focus=true]:bg-default/60",
+            "bg-transparent",
+            "dark:bg-transparent",
+            "hover:bg-transparent",
+            "dark:hover:bg-transparent",
+            "group-data-[focus=true]:bg-transparent",
+            "dark:group-data-[focus=true]:bg-transparent",
+            "shadow-none",
             "!cursor-text",
           ],
         }}
         startContent={
-          <Image
-            src="/search-icon.svg"
-            alt="search"
-            height="0"
-            width="0"
-            sizes="100vw"
-            className="h-4 w-4"
+          <MagnifyingGlassIcon
+            strokeWidth={2}
+            className="text-zinc-500/65 dark:text-white/85 h-6 w-6"
           />
         }
       />
+
+      <Divider orientation="vertical" className="h-8" />
 
       {/*--------------- LOCATION INPUT ---------------*/}
       <Input
         value={locationInput}
         isClearable
-        radius="sm"
         placeholder="Location..."
         onValueChange={(value) => setLocationInput(value)}
-        className="w-auto"
+        className="w-4/12"
         classNames={{
           input: [
-            "bg-transparent",
+            "bg-transparent dark:bg-transparent",
             "text-black/90 dark:text-white/90",
-            "placeholder:text-default-900/50 dark:placeholder:text-white/60",
+            "placeholder:font-medium placeholder:text-default-900/50 dark:placeholder:text-white/60",
+            "hover:bg-transparent",
           ],
-          innerWrapper: "bg-transparent",
+          innerWrapper: "bg-transparent dark:bg-transparent",
           inputWrapper: [
-            "bg-default-200/50",
-            "dark:bg-default/60",
-            "backdrop-blur-lg",
-            "backdrop-saturate-200",
-            "hover:bg-default-200/70",
-            "dark:hover:bg-default/70",
-            "group-data-[focus=true]:bg-default-200/50",
-            "dark:group-data-[focus=true]:bg-default/60",
+            "bg-transparent",
+            "dark:bg-transparent",
+            "hover:bg-transparent",
+            "dark:hover:bg-transparent",
+            "group-data-[focus=true]:bg-transparent",
+            "dark:group-data-[focus=true]:bg-transparent",
+            "shadow-none",
             "!cursor-text",
           ],
         }}
         startContent={
-          <Image
-            src="/location-pin-black.svg"
-            alt="location"
-            height="0"
-            width="0"
-            sizes="100vw"
-            className="h-4 w-4 opacity-50"
-          />
+          <MapPinIcon className="text-zinc-500/65 dark:text-white/85 h-6 w-6" />
         }
       />
 
       {/*--------------- SEARCH BUTTON ---------------*/}
-      <Button
-        size="md"
-        className="ml-auto bg-gradient-to-br from-purple-500 to-orange-300 text-white font-medium disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed"
+      <CustomButton
+        color="teal"
+        className="text-base ml-auto rounded-full w-2/12 disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed"
         disabled={!searchInput}
         onClick={handleSearchClick}
       >
-        search
-      </Button>
-    </div>
+        Search
+      </CustomButton>
+    </form>
   );
 };
 

@@ -28,10 +28,13 @@ export const ThemeSwitcher = () => {
       {theme === "light" ? (
         <MoonIcon
           strokeWidth={2}
-          className="h-6 w-6 group-hover:fill-teal-500 transition"
+          className="h-6 w-6 group-hover:fill-teal-400 transition"
         />
       ) : (
-        <SunIcon strokeWidth={2} className="h-6 w-6 transition" />
+        <SunIcon
+          strokeWidth={2}
+          className="h-6 w-6 group-hover:fill-teal-400 transition"
+        />
       )}
     </CustomButton>
   );
