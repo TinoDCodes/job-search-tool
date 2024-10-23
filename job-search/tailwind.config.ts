@@ -22,7 +22,7 @@ const config: Config = {
         },
         dark: {
           colors: {
-            background: "#141414",
+            background: "#141422",
           },
         },
       },

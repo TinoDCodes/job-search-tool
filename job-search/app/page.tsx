@@ -2,7 +2,7 @@ import Hero from "@/components/Hero";
 import { LandingPageDecoration } from "@/components/LandingPageDecoration";
 import SearchInputsArea from "@/components/SearchInputsArea";
 
-const Home = () => {
+const LandingPage = () => {
   return (
     <main className="wrapper h-full flex flex-col items-center justify-center">
       <Hero />
@@ -12,4 +12,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LandingPage;

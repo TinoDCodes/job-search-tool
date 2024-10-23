@@ -34,8 +34,8 @@ body {
 @layer utilities {
   .globe-background {
     position: absolute;
-    width: calc(100vh * 0.9); /* Adjust size as needed */
-    height: calc(100vh * 0.9);
+    width: calc(100vh * 0.8); /* Adjust size as needed */
+    height: calc(100vh * 0.8);
     background: radial-gradient(
       circle,
       rgba(45, 212, 191, 1) 0%,
@@ -46,6 +46,8 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: -1;
+    max-width: 100vw;
+    max-height: 100vw;
   }
 
   .text-balance {
@@ -53,7 +55,7 @@ body {
   }
 
   .wrapper {
-    @apply px-4 md:px-8 lg:px-10 py-4;
+    @apply mx-auto px-4 md:px-8 lg:px-10 py-4;
   }
 
   .text-shadow-same {

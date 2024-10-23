@@ -6,48 +6,55 @@ import { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { MapPinIcon } from "@heroicons/react/16/solid";
 import { CustomButton } from "./custom/CustomButton";
+import { useRouter } from "next/navigation";
 
 const SearchInputsArea = () => {
+  const router = useRouter();
+
   const [searchInput, setSearchInput] = useState<string>("");
   const [locationInput, setLocationInput] = useState<string>("");
 
-  const [loadingJobs, setLoadingJobs] = useState<boolean>(false);
-  const [linkedInData, setLinkedInData] = useState<LinkedInJob[] | null>(null);
+  // const [loadingJobs, setLoadingJobs] = useState<boolean>(false);
+  // const [linkedInData, setLinkedInData] = useState<LinkedInJob[] | null>(null);
 
-  const handleSearch = async (keywords: string, location: string) => {
-    setLoadingJobs(true);
-    try {
-      await fetch("/api/linkedin", {
-        headers: {
-          "search-keywords": keywords,
-          location: location,
-        },
-      }).then(async (response) => {
-        const { linkedInJobs } = await response.json();
-        setLinkedInData(linkedInJobs);
-      });
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoadingJobs(false);
-    }
-  };
+  // const handleSearch = async (keywords: string, location: string) => {
+  //   setLoadingJobs(true);
+  //   try {
+  //     await fetch("/api/linkedin", {
+  //       headers: {
+  //         "search-keywords": keywords,
+  //         location: location,
+  //       },
+  //     }).then(async (response) => {
+  //       const { linkedInJobs } = await response.json();
+  //       setLinkedInData(linkedInJobs);
+  //     });
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   } finally {
+  //     setLoadingJobs(false);
+  //   }
+  // };
 
-  const handleSearchClick = () => {
-    handleSearch(searchInput, locationInput);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    router.push(`/search?keywords=${searchInput}&location=${locationInput}`);
 
     setSearchInput("");
     setLocationInput("");
   };
 
   return (
-    <form className="w-full md:max-w-[80%] lg:max-w-[70%] xl:max-w-[60%] flex items-center gap-3 rounded-full shadow-md bg-[#eeeeee] dark:bg-white/10 p-3">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full md:max-w-[80%] lg:max-w-[70%] xl:max-w-[60%] flex items-center gap-1 lg:gap-3 rounded-full shadow-md bg-[#eeeeee] dark:bg-white/10 px-1 py-2 lg:p-3"
+    >
       {/*--------------- KEYWORDS INPUT ---------------*/}
       <Input
         value={searchInput}
         isClearable
         placeholder="Search for job listings..."
-        onValueChange={(value) => setSearchInput(value)}
+        onValueChange={(value) => setSearchInput(value.trimStart())}
         className="w-6/12"
         classNames={{
           input: [
@@ -83,8 +90,8 @@ const SearchInputsArea = () => {
         value={locationInput}
         isClearable
         placeholder="Location..."
-        onValueChange={(value) => setLocationInput(value)}
-        className="w-4/12"
+        onValueChange={(value) => setLocationInput(value.trimStart())}
+        className="w-5/12 md:w-4/12"
         classNames={{
           input: [
             "bg-transparent dark:bg-transparent",
@@ -112,11 +119,20 @@ const SearchInputsArea = () => {
       {/*--------------- SEARCH BUTTON ---------------*/}
       <CustomButton
         color="teal"
-        className="text-base ml-auto rounded-full w-2/12 disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed"
-        disabled={!searchInput}
-        onClick={handleSearchClick}
+        className="hidden md:block text-base ml-auto md:mr-1 rounded-full w-2/12 disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed"
+        disabled={!searchInput.trim()}
+        type="submit"
       >
         Search
+      </CustomButton>
+      <CustomButton
+        isIconOnly
+        color="teal"
+        disabled={!searchInput.trim()}
+        type="submit"
+        className="md:hidden rounded-full mr-1 disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed"
+      >
+        <MagnifyingGlassIcon strokeWidth={3} className="h-5 w-5" />
       </CustomButton>
     </form>
   );

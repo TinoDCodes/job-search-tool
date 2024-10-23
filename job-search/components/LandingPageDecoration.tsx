@@ -36,11 +36,11 @@ const dummyJobs: LinkedInJob[] = [
 
 export const LandingPageDecoration = () => {
   return (
-    <div className="mt-20 hidden lg:flex items-center gap-8">
+    <div className="w-full mt-14 lg:mt-20 flex flex-col md:flex-row md:flex-wrap items-center justify-center gap-5 lg:gap-8">
       {dummyJobs.map((job) => (
         <div
           key={job.id}
-          className="flex flex-col w-[24rem] h-[8rem] bg-black/10 dark:bg-white/20 rounded-medium py-2 px-3 opacity-60"
+          className="flex flex-col w-full md:w-[20rem] lg:w-[24rem]  lg:h-[8rem] bg-black/10 dark:bg-white/20 rounded-medium py-2 px-3 opacity-50"
         >
           <section className="flex items-center gap-2">
             <Image
@@ -48,7 +48,7 @@ export const LandingPageDecoration = () => {
               alt={job.title}
               width={80}
               height={80}
-              className="h-20 w-20"
+              className="h-14 w-14 lg:h-20 lg:w-20"
             />
             <div className="flex flex-col">
               <p className="text-sm font-medium text-black dark:text-zinc-100">

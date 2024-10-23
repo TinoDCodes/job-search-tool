@@ -8,6 +8,11 @@ import {
   Button,
 } from "@nextui-org/react";
 import { CustomButton } from "./custom/CustomButton";
+import {
+  BookmarkIcon,
+  BookOpenIcon,
+  ClockIcon,
+} from "@heroicons/react/16/solid";
 
 const SearchHistory = () => {
   const items = [
@@ -30,13 +35,17 @@ const SearchHistory = () => {
   ];
 
   return (
-    <Dropdown>
+    <Dropdown className="bg-[#eeeeee] dark:bg-[#141429]">
       <DropdownTrigger>
-        <CustomButton color="teal-shadow" className="rounded-full">
-          Previous searches
+        <CustomButton
+          color="teal-shadow"
+          className="rounded-full flex items-center"
+        >
+          <ClockIcon className="h-5 w-5" />
+          History
         </CustomButton>
       </DropdownTrigger>
-      <DropdownMenu aria-label="Dynamic Actions" items={items}>
+      <DropdownMenu aria-label="Search Histroy" items={items}>
         {(item) => (
           <DropdownItem
             key={item.key}
