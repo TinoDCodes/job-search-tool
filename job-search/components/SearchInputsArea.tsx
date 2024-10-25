@@ -1,7 +1,6 @@
 "use client";
 
-import { LinkedInJob } from "@/app/api/linkedin/scraper";
-import { Input, Button, Divider } from "@nextui-org/react";
+import { Input, Divider } from "@nextui-org/react";
 import { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { MapPinIcon } from "@heroicons/react/16/solid";
@@ -14,31 +13,13 @@ const SearchInputsArea = () => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [locationInput, setLocationInput] = useState<string>("");
 
-  // const [loadingJobs, setLoadingJobs] = useState<boolean>(false);
-  // const [linkedInData, setLinkedInData] = useState<LinkedInJob[] | null>(null);
-
-  // const handleSearch = async (keywords: string, location: string) => {
-  //   setLoadingJobs(true);
-  //   try {
-  //     await fetch("/api/linkedin", {
-  //       headers: {
-  //         "search-keywords": keywords,
-  //         location: location,
-  //       },
-  //     }).then(async (response) => {
-  //       const { linkedInJobs } = await response.json();
-  //       setLinkedInData(linkedInJobs);
-  //     });
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   } finally {
-  //     setLoadingJobs(false);
-  //   }
-  // };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push(`/search?keywords=${searchInput}&location=${locationInput}`);
+    router.push(
+      `/search?keywords=${searchInput}${
+        locationInput && `&location=${locationInput}`
+      }`
+    );
 
     setSearchInput("");
     setLocationInput("");

@@ -1,3 +1,7 @@
+import DisplayJobListings from "@/components/DisplayJobListings";
+import SearchInputsArea from "@/components/SearchInputsArea";
+import { redirect } from "next/navigation";
+
 interface SearchPageProps {
   searchParams: {
     keywords: string;
@@ -5,9 +9,23 @@ interface SearchPageProps {
   };
 }
 
-const SearchPage = ({ searchParams }: SearchPageProps) => {
+const SearchPage = async ({ searchParams }: SearchPageProps) => {
+  if (!searchParams.keywords) redirect("/");
+
   return (
-    <div className="wrapper">Showing results for: {searchParams.keywords}</div>
+    <div className="wrapper">
+      <section className="w-full flex flex-col items-center gap-4 mb-4">
+        <h1 className="text-center font-bold text-lg md:text-xl lg:text-2xl xl:text-3xl">
+          One Search, Endless Opportunities
+        </h1>
+
+        <SearchInputsArea />
+      </section>
+
+      <section className="">
+        <DisplayJobListings searchParams={searchParams} />
+      </section>
+    </div>
   );
 };
 

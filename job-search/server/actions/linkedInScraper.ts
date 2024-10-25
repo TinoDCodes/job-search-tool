@@ -17,9 +17,10 @@ const SEARCH_PAGE_BASE_URL =
  */
 function searchPageUrlBuilder(searchKeywords: string, location: string) {
   const keywords = encodeURIComponent(searchKeywords);
-  const locationUriComponent = location.trim()
-    ? `&location=${encodeURIComponent(location)}`
-    : "";
+  const locationUriComponent =
+    location && location.trim()
+      ? `&location=${encodeURIComponent(location)}`
+      : "";
 
   const pageUrl = `${SEARCH_PAGE_BASE_URL}keywords=${keywords}${locationUriComponent}`;
   return pageUrl;
@@ -30,7 +31,7 @@ function searchPageUrlBuilder(searchKeywords: string, location: string) {
  *
  * @param {string} searchKeywords - The search keywords entered by the user for the desired job posts.
  * @param {string} [location] - the location the user wishes to find the particular jobs in.
- * @returns {Promise<Job[]>} A promise that resolves to an array of job objects, each containing the
+ * @returns {Promise<LinkedInJob[]>} A promise that resolves to an array of job objects, each containing the
  * id, title, company, location, date listed, and link of a job listing.
  */
 export async function getScrapedLinkedInJobs(
@@ -66,8 +67,7 @@ export async function getScrapedLinkedInJobs(
       scrapedJobsList.push(...jobs);
     } catch (error) {
       console.error(
-        `Unexpected error while scraping LinkedIn Jobs on page ${i + 1}`,
-        error
+        `Unexpected error while scraping LinkedIn Jobs on page ${i + 1}`
       );
     }
   }
@@ -105,16 +105,18 @@ function scrapeJobsFromSearchPage(html: string) {
       $(jobElement).find(".job-search-card__listdate--new").text().trim();
     const imageSrc = $(jobElement).find("img").attr("data-delayed-url");
 
-    list.push({
-      id: getJobIdNumber(id),
-      title,
-      company,
-      location,
-      dateListed,
-      link,
-      imageSrc,
-      platform: "linkedin",
-    });
+    if (id && title && company && location && dateListed && link) {
+      list.push({
+        id: getJobIdNumber(id),
+        title,
+        company,
+        location,
+        dateListed,
+        link,
+        imageSrc: imageSrc || "/linkedin.svg",
+        platform: "linkedin",
+      });
+    }
   });
 
   return list;

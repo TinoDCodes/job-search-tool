@@ -1,10 +1,10 @@
-import { LinkedInJob } from "@/app/api/linkedin/scraper";
+import { Job } from "@/utils/types";
 import { MapPinIcon } from "@heroicons/react/16/solid";
 import { LinkIcon } from "@heroicons/react/24/outline";
 import { Divider } from "@nextui-org/react";
 import Image from "next/image";
 
-const dummyJobs: LinkedInJob[] = [
+const dummyJobs: Job[] = [
   {
     id: "492384",
     title: "Agile Coach",
@@ -13,6 +13,7 @@ const dummyJobs: LinkedInJob[] = [
     dateListed: "2 days ago",
     link: "https://www.linkedin.com/jobs/job-id-123456789",
     imageSrc: "/microsoft.svg",
+    platform: "linkedin",
   },
   {
     id: "10892384",
@@ -22,6 +23,7 @@ const dummyJobs: LinkedInJob[] = [
     dateListed: "2 weeks ago",
     link: "https://www.linkedin.com/jobs/job-id-123456789",
     imageSrc: "/linkedin.svg",
+    platform: "indeed",
   },
   {
     id: "123456789",
@@ -31,6 +33,7 @@ const dummyJobs: LinkedInJob[] = [
     dateListed: "17 hours ago",
     link: "https://www.linkedin.com/jobs/job-id-123456789",
     imageSrc: "/amazon.svg",
+    platform: "toptal",
   },
 ];
 
