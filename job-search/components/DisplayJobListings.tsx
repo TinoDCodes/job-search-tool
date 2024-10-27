@@ -25,7 +25,7 @@ const DisplayJobListings = ({ searchParams }: Props) => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["jobs", searchParams.keywords],
+    queryKey: ["jobs", searchParams.keywords, searchParams.location],
     queryFn: async () => {
       const jobs = await getScrapedLinkedInJobs(
         searchParams.keywords,

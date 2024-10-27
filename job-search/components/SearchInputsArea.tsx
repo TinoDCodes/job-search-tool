@@ -6,15 +6,22 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { MapPinIcon } from "@heroicons/react/16/solid";
 import { CustomButton } from "./custom/CustomButton";
 import { useRouter } from "next/navigation";
+import { useSearchHistoryStore } from "@/store/searchHistoryStore";
 
 const SearchInputsArea = () => {
   const router = useRouter();
+  const addToHistory = useSearchHistoryStore(
+    (state) => state.addToSearchHistory
+  );
 
   const [searchInput, setSearchInput] = useState<string>("");
   const [locationInput, setLocationInput] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    addToHistory(searchInput, locationInput);
+
     router.push(
       `/search?keywords=${searchInput}${
         locationInput && `&location=${locationInput}`

@@ -10,3 +10,9 @@ export type Job = {
   imageSrc: string;
   platform: ListingPlatform;
 };
+
+export type SearchHistoryRecord = {
+  key: string;
+  keywords: string;
+  location?: string;
+};
