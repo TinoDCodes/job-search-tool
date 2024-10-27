@@ -5,6 +5,7 @@ import { Pagination, Spinner } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 import EmptyJobsScreen from "./EmptyJobsScreen";
 import { JobCard } from "./JobCard";
+import { useMemo, useState } from "react";
 
 interface Props {
   searchParams: {
@@ -13,7 +14,12 @@ interface Props {
   };
 }
 
+const JOBS_PER_PAGE = 16;
+
 const DisplayJobListings = ({ searchParams }: Props) => {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Fetch jobs data based on search parameters
   const {
     data: jobs,
     isLoading,
@@ -27,38 +33,38 @@ const DisplayJobListings = ({ searchParams }: Props) => {
       );
       return jobs;
     },
-    staleTime: 15 * 60 * 1000, // 15 minutes
+    staleTime: 15 * 60 * 1000, // Cache data for 15 minutes
   });
 
+  /**
+   * Memoized list of jobs for the current page to improve performance.
+   */
+  const paginatedJobs = useMemo(() => {
+    if (!jobs) return [];
+    const start = (currentPage - 1) * JOBS_PER_PAGE;
+    const end = start + JOBS_PER_PAGE;
+    return jobs.slice(start, end);
+  }, [jobs, currentPage]);
+
+  const totalJobs = jobs ? jobs.length : 0;
+  const numberOfPages = Math.ceil(totalJobs / JOBS_PER_PAGE);
   const displayedJobsLength =
-    jobs && jobs.length ? Math.ceil(jobs.length * 0.75) : 0;
+    totalJobs <= JOBS_PER_PAGE
+      ? `${totalJobs}`
+      : `${Math.floor(totalJobs / JOBS_PER_PAGE) * JOBS_PER_PAGE}+`;
 
-  // const numberOfPages: number = jobListings
-  //   ? Math.ceil(jobListings?.length / 20)
-  //   : 0;
+  /**
+   * Handles page change for pagination.
+   * Scrolls to the top smoothly when the page is changed.
+   *
+   * @param {number} page - The page number selected in the pagination
+   */
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-  // useEffect(() => {
-  //   if (jobListings && jobListings.length > 0) {
-  //     setDisplayedJobs(jobListings.slice(0, 20));
-  //   }
-  // }, [jobListings]);
-
-  // const handlePageChange = (page: number) => {
-  //   if (!jobListings) return;
-
-  //   const startIndex = (page - 1) * 20;
-  //   let endIndex = startIndex + 20;
-
-  //   if (endIndex >= jobListings?.length) endIndex = jobListings?.length - 1;
-
-  //   setDisplayedJobs(jobListings?.slice(startIndex, endIndex));
-  //   window.scrollTo({ top: 0, behavior: "smooth" });
-  // };
-
-  // if (!jobListings || jobListings.length === 0) {
-  //   return <EmptyJobsScreen />;
-  // }
-
+  /*----- Show loading spinner while fetching data -----*/
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center">
@@ -67,10 +73,12 @@ const DisplayJobListings = ({ searchParams }: Props) => {
     );
   }
 
+  /*----- Display error message if the data fetch fails -----*/
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
+  /*----- Display empty jobs screen if there are no jobs -----*/
   if (!jobs || jobs.length === 0) {
     return <EmptyJobsScreen />;
   }
@@ -83,26 +91,31 @@ const DisplayJobListings = ({ searchParams }: Props) => {
           results for <span className="font-bold">{searchParams.keywords}</span>
         </p>
         <small className="font-medium text-sm lg:text-base text-zinc-400">
-          {displayedJobsLength}+ jobs
+          {displayedJobsLength} jobs
         </small>
       </div>
 
       {/*--------------- JOB LISTING CARDS ---------------*/}
       <section className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 xl:gap-6">
-        {jobs.map((job, index) => (
+        {paginatedJobs.map((job, index) => (
           <JobCard key={job.id || index} job={job} />
         ))}
       </section>
 
       {/*--------------- PAGINATION ---------------*/}
-      {/* <Pagination
+      <Pagination
         showShadow
-        color="secondary"
+        size="md"
+        variant="bordered"
         total={numberOfPages}
         initialPage={1}
         className="mx-auto font-medium"
+        classNames={{
+          item: "rounded-full",
+          cursor: "bg-teal-400/80 rounded-full",
+        }}
         onChange={handlePageChange}
-      /> */}
+      />
     </main>
   );
 };

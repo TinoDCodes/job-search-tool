@@ -9,7 +9,12 @@ const config: Config = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "custom-gradient":
+          "linear-gradient(to right bottom, #99f6e4, #4fe6f7, #00d0ff, #59b2ff, #a78bfa)",
+      },
+    },
   },
   darkMode: "class",
   plugins: [
