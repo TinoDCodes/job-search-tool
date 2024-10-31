@@ -10,7 +10,7 @@ interface Props {
 export const JobCard = ({ job }: Props) => {
   return (
     <div className="flex flex-col w-full lg:h-[8rem] rounded-medium bg-zinc-100/80 shadow-md dark:bg-white/5 py-2 px-3">
-      <section className="flex items-center gap-2">
+      <section className="flex items-center gap-2 2xl:gap-4">
         <Image
           src={job.imageSrc}
           alt={job.title}
@@ -18,6 +18,7 @@ export const JobCard = ({ job }: Props) => {
           height={80}
           className="h-14 w-14 lg:h-20 lg:w-20 rounded-md"
         />
+
         <div className="flex flex-col">
           <p className="text-sm font-medium text-black dark:text-zinc-100 line-clamp-2">
             {job.title}
@@ -26,6 +27,7 @@ export const JobCard = ({ job }: Props) => {
             {job.company}
           </p>
         </div>
+
         <a href={job.link} target="_blank" rel="noreferrer" className="ml-auto">
           <LinkIcon
             strokeWidth={2}

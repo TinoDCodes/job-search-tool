@@ -17,7 +17,7 @@ export const Header = () => {
         />
       </Link>
 
-      <section className="flex items-center gap-4">
+      <section className="flex items-center gap-2 lg:gap-4">
         <ThemeSwitcher />
 
         <SearchHistory />
