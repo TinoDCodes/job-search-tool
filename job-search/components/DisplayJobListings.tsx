@@ -1,11 +1,11 @@
 "use client";
 
-import { getScrapedLinkedInJobs } from "@/server/actions/linkedInScraper";
 import { Pagination, Spinner } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import EmptyJobsScreen from "./EmptyJobsScreen";
 import { JobCard } from "./JobCard";
 import { useMemo, useState } from "react";
+import { Job } from "@/utils/types";
 
 interface Props {
   searchParams: {
@@ -19,21 +19,31 @@ const JOBS_PER_PAGE = 16;
 const DisplayJobListings = ({ searchParams }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Fetch jobs data based on search parameters
+  // Fetch jobs data from the API route
   const {
     data: jobs,
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<Job[]>({
     queryKey: ["jobs", searchParams.keywords, searchParams.location],
     queryFn: async () => {
-      const jobs = await getScrapedLinkedInJobs(
-        searchParams.keywords,
-        searchParams.location
-      );
-      return jobs;
+      // Construct the query string
+      const params = new URLSearchParams();
+      if (searchParams.keywords)
+        params.append("keywords", searchParams.keywords);
+      if (searchParams.location)
+        params.append("location", searchParams.location);
+
+      const response = await fetch(`/api/linkedin-jobs?${params.toString()}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch jobs");
+      }
+
+      return response.json();
     },
     staleTime: 15 * 60 * 1000, // Cache data for 15 minutes
+    retry: 2, // Retry failed requests twice
   });
 
   /**
