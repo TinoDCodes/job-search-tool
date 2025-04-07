@@ -6,11 +6,12 @@ import {
   DropdownMenu,
   DropdownItem,
   DropdownSection,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { CustomButton } from "./custom/CustomButton";
 import { ClockIcon, MapPinIcon, TrashIcon } from "@heroicons/react/16/solid";
 import { useSearchHistoryStore } from "@/store/searchHistoryStore";
 import { SearchHistoryRecord } from "@/utils/types";
+import { Key } from "react";
 
 const SearchHistoryItem = ({ record }: { record: SearchHistoryRecord }) => {
   return (
@@ -25,34 +26,57 @@ const SearchHistoryItem = ({ record }: { record: SearchHistoryRecord }) => {
 };
 
 const SearchHistory = () => {
-  const history = useSearchHistoryStore((state) => state.history);
+  const { history, clearSearchHistory } = useSearchHistoryStore(
+    (state) => state
+  );
+
+  const handleClearHistory = () => {
+    clearSearchHistory();
+  };
 
   return (
     <Dropdown backdrop="opaque" className="bg-white dark:bg-[#141422ec]">
       <DropdownTrigger>
         <CustomButton
           color="teal-shadow"
-          className="rounded-full flex items-center"
+          className="rounded-full flex items-center px-4 gap-1"
           size="history"
         >
           <ClockIcon className="h-5 w-5" />
           <span className="hidden lg:block">Search History</span>
         </CustomButton>
       </DropdownTrigger>
-      <DropdownMenu aria-label="Search Histroy">
-        <DropdownSection className="max-h-[60vh] overflow-y-auto border-b border-zinc-100 dark:border-zinc-800">
-          {history.map((record) => (
+      <DropdownMenu
+        aria-label="Search Histroy"
+        onAction={(key: Key) => {
+          if (key === "delete") {
+            handleClearHistory();
+          }
+        }}
+        disabledKeys={history.length === 0 ? ["delete", "empty"] : []}
+      >
+        <DropdownSection className="max-h-[60vh] min-w-72 overflow-y-auto border-b border-zinc-100 dark:border-zinc-800">
+          {history.length === 0 ? (
             <DropdownItem
-              key={record.key}
-              href={`/search?keywords=${record.keywords}${
-                record.location && `&location=${record.location}`
-              }`}
-              className="dark:hover:bg-teal-500/30"
-              textValue={`${record.keywords} - ${record.location}`}
+              key="empty"
+              className="text-zinc-300 py-6 min-w-60 text-center"
             >
-              <SearchHistoryItem record={record} />
+              No search history
             </DropdownItem>
-          ))}
+          ) : (
+            history.map((record) => (
+              <DropdownItem
+                key={record.key}
+                href={`/search?keywords=${record.keywords}${
+                  record.location && `&location=${record.location}`
+                }`}
+                className="dark:hover:bg-teal-500/30"
+                textValue={`${record.keywords} - ${record.location}`}
+              >
+                <SearchHistoryItem record={record} />
+              </DropdownItem>
+            ))
+          )}
         </DropdownSection>
 
         <DropdownItem

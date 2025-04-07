@@ -1,6 +1,6 @@
 "use client";
 
-import { Input, Divider } from "@nextui-org/react";
+import { Input, Divider } from "@heroui/react";
 import { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { MapPinIcon } from "@heroicons/react/16/solid";

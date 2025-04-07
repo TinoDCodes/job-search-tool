@@ -1,6 +1,6 @@
 import { Job } from "@/utils/types";
 import { LinkIcon, MapPinIcon } from "@heroicons/react/16/solid";
-import { Divider } from "@nextui-org/react";
+import { Divider } from "@heroui/react";
 import Image from "next/image";
 
 interface Props {

@@ -1,7 +1,7 @@
 import { Job } from "@/utils/types";
 import { MapPinIcon } from "@heroicons/react/16/solid";
 import { LinkIcon } from "@heroicons/react/24/outline";
-import { Divider } from "@nextui-org/react";
+import { Divider } from "@heroui/react";
 import Image from "next/image";
 
 const dummyJobs: Job[] = [

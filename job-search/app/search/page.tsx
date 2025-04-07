@@ -22,7 +22,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
         <SearchInputsArea />
       </section>
 
-      <section className="">
+      <section>
         <DisplayJobListings searchParams={searchParams} />
       </section>
     </div>

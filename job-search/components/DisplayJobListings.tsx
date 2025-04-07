@@ -1,7 +1,7 @@
 "use client";
 
 import { getScrapedLinkedInJobs } from "@/server/actions/linkedInScraper";
-import { Pagination, Spinner } from "@nextui-org/react";
+import { Pagination, Spinner } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import EmptyJobsScreen from "./EmptyJobsScreen";
 import { JobCard } from "./JobCard";
@@ -68,7 +68,7 @@ const DisplayJobListings = ({ searchParams }: Props) => {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center">
-        <Spinner color="secondary" size="lg" />
+        <Spinner />
       </div>
     );
   }
@@ -84,7 +84,7 @@ const DisplayJobListings = ({ searchParams }: Props) => {
   }
 
   return (
-    <main className="h-full w-full flex flex-col gap-6">
+    <main className="min-h-[70vh] w-full flex flex-col gap-6">
       {/*--------------- JOB LISTING HEADER ---------------*/}
       <div className="flex items-center justify-between">
         <p className="font-medium text-sm lg:text-base text-zinc-400 max-w-[65%] truncate">
@@ -109,7 +109,7 @@ const DisplayJobListings = ({ searchParams }: Props) => {
         variant="bordered"
         total={numberOfPages}
         initialPage={1}
-        className="mx-auto font-medium"
+        className="mx-auto font-medium mt-auto"
         classNames={{
           item: "rounded-full",
           cursor: "bg-teal-400/80 rounded-full",

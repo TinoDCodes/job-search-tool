@@ -21,6 +21,8 @@ type Actions = {
    * @param key - The unique key identifier for the record to remove.
    */
   removeFromSearchHistory: (key: string) => void;
+  /** Clears the entire search history. */
+  clearSearchHistory: () => void;
 };
 
 export const useSearchHistoryStore = create<State & Actions>()(
@@ -52,6 +54,9 @@ export const useSearchHistoryStore = create<State & Actions>()(
           (record) => record.key !== key
         );
         set({ history: newHistory });
+      },
+      clearSearchHistory: () => {
+        set({ history: [] });
       },
     }),
     {

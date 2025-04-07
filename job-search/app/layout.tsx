@@ -25,9 +25,9 @@ export default function RootLayout({
       <body className={montserrat.className}>
         <Providers>
           <div className="flex flex-col">
-            <div className="globe-background opacity-70 dark:opacity-50"></div>
+            <div className="globe-background flex flex-col opacity-70 dark:opacity-50"></div>
             <Header />
-            {children}
+            <div className="flex-grow">{children}</div>
           </div>
         </Providers>
       </body>

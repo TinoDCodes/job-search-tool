@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { CustomButton } from "./custom/CustomButton";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";

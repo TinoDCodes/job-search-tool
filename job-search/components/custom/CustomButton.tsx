@@ -1,4 +1,4 @@
-import { extendVariants, Button } from "@nextui-org/react";
+import { extendVariants, Button } from "@heroui/react";
 
 export const CustomButton = extendVariants(Button, {
   variants: {

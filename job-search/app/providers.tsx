@@ -6,7 +6,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/react";
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 
 function makeQueryClient() {
@@ -46,11 +46,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <NextUIProvider>
+      <HeroUIProvider>
         <NextThemeProvider attribute="class" defaultTheme="dark">
           {children}
         </NextThemeProvider>
-      </NextUIProvider>
+      </HeroUIProvider>
     </QueryClientProvider>
   );
 }
